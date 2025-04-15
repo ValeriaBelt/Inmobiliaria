@@ -1,0 +1,64 @@
+create table apartamentos(
+idapartamento int primary key identity (1,1),
+piso int not null,
+amoblado varchar (150) not null,
+estado bit not null,
+longitud varchar (100) not null
+);
+
+create table inquilinos(
+iddocumento int primary key identity (1,1),
+nombre varchar (150) not null,
+apellido varchar (150) not null,
+telefono varchar (50) not null,
+idapartamento int not null,
+foreign key (idapartamento) references apartamentos (idapartamento)
+);
+
+create table contratos(
+idcontrato int primary key identity (1,1),
+idapartamento int not null,
+iddocumento int not null,
+fechaInicio date not null,
+fechaFin date not null,
+estado varchar (50) not null,
+servicios varchar (150) not null,
+foreign key (idapartamento) references apartamentos (idapartamento),
+foreign key (iddocumento) references inquilinos (iddocumento)
+ );
+
+ create table incidencias(
+ idincidencia int primary key identity (1,1),
+ idapartamento int not null,
+ descripcion varchar (400) not null,
+ fecha date not null,
+ foreign key (idapartamento) references apartamentos (idapartamento)
+ );
+
+ create table personal(
+ idpersonal int primary key identity (1,1),
+ nombre varchar (150) not null,
+ apellido varchar (150) not null,
+ telefono varchar (15) not null,
+ cargo varchar (150) not null,
+ horario varchar (200) not null
+ );
+
+ create table mantenimientos(
+ idmantenimiento int primary key identity (1,1),
+ idapartamento int not null,
+ tipo varchar (250) not null,
+ fecha date not null,
+ costo decimal (18,2) not null,
+ idpersonal int not null,
+ foreign key (idapartamento) references apartamentos (idapartamento),
+ foreign key (idpersonal) references personal (idpersonal)
+ );
+
+ create table pagos(
+ idpago int primary key identity (1,1),
+ idcontrato int not null,
+ fecha date not null,
+ costo decimal (18,2) not null,
+ foreign key (idcontrato) references contratos (idcontrato)
+ );
